@@ -1,0 +1,195 @@
+#include <Servo.h>
+
+  // put your main code here, to run repeatedly:
+  // Controlling 2 Servos Using a Joystick.
+
+  int x_key = A1; // initializing A1 for storing the joystick’s x key value
+  int y_key = A0; // initializing A0 for storing the joystick’s y key value
+  int ax_key = A2;
+  int ay_key = A3;
+
+  int Push_Button = 2; // initializing digital pin 2 for joystick’s press to select button
+
+  int Horizontal_Position = 0; // Declaring a variable for storing the value
+  int Vertical_Position = 0; // Declaring a variable for storing the value
+  int A_Horizontal_Position = 0;
+  int A_Vertical_Position = 0;
+
+  int button_State = 0; // Declaring a variable for storing the value
+
+  int First_Signal_Pin = 6; // initializing pin 6 for first servo
+  int Second_Signal_Pin =  5; // initializing pin 5  for second servo
+  int Third_Signal_Pin = 4;
+ 
+  int Horizontal_Joystick_Pin = A0; // initializing A0 for horizontal movement
+  int Vertical_Joystick_Pin = A1; // initializing A1 for vertical movement
+
+
+  int A_Horizontal_Joystick_Pin = A2; // initializing A0 for horizontal movement
+  int B_Vertical_Joystick_Pin = A3; // initializing A1 for vertical movement
+
+ 
+  // initializing the min and max values for horizontal and vertical movement
+ 
+  int Horizontal_Min = 0;
+  int Horizontal_Max = 180;
+ 
+  int Vertical_Min = 0;
+  int Vertical_Max = 180;
+
+  int Temp_Vertical = 90;
+  int Temp_Horizontal = 90;
+  int A_Temp_Horizontal = 90;
+  int A_Temp_Vertical = 90;
+ 
+  Servo First_Servo;
+  Servo Second_Servo;
+  Servo Third_Servo;
+  
+ 
+  // Declaring variables for storing values
+ 
+  int Horizontal_Value;
+  int Horizontal_Servo_Value;
+
+  int A_Horizontal_Value;
+  int A_Horizontal_Servo_Value;
+ 
+  int Vertical_Value;
+  int Vertical_Servo_Value;
+
+  int A_Vertical_Value;
+  int A_Vertical_Servo_Value;
+ 
+  void setup ( ) {
+
+  Serial.begin ( 9600 ); // initializing serial communications at 9600 bps
+
+  pinMode ( x_key, INPUT ); // Selecting Arduino analog A1 pin as input
+  pinMode ( y_key, INPUT ); // Selecting Arduino analog A0 pin as input
+  
+  pinMode ( ay_key, INPUT ); // 
+  pinMode (Push_Button, INPUT_PULLUP ); // This will activate pull-up resistor on the push-button pin
+
+  First_Servo.attach(First_Signal_Pin ); // Enabling pin 6 for first servo
+  Second_Servo.attach(Second_Signal_Pin ); // Enabling pin 7 for first servo
+  Third_Servo.attach(Third_Signal_Pin ); // Enabling pin 7 for first servo
+  }
+
+void loop ( ) {
+
+  Horizontal_Position = analogRead(x_key); // Reading the value from A1 and storing in Horizontal_Position
+  Vertical_Position = analogRead(y_key); // Reading the value from A0 and storing in Vertical_Position
+  A_Horizontal_Position = analogRead(ax_key); 
+  A_Vertical_Position = analogRead(ax_key); 
+
+  button_State = digitalRead(Push_Button); // Reading the digital pin 2 is high or low
+
+  Serial.print(" Value of X key is "); // Printing “ Value of X key is ” on the disply
+  Serial.print(Horizontal_Position); // Printing value of x key on the display
+  Serial.print(" | Value of Y key is "); // Printing “ Value of Y key is ” on the screen
+  Serial.print(Vertical_Position); // Printing value of y key on the display
+  Serial.print(" | Value of Z key is "); // Printing “ Value of Y key is ” on the screen
+  Serial.print(A_Horizontal_Position); // Printing value of y key on the display
+  Serial.print(" | Button State is "); // Printing “ Button state ” on the display
+  Serial.println(button_State); // Printing the button is high or low on the display
+
+  Horizontal_Value = analogRead(Horizontal_Joystick_Pin);  // Reading the value from A0
+
+
+  Vertical_Value = analogRead(Vertical_Joystick_Pin); // Reading the value from A1
+
+  A_Horizontal_Value = analogRead(A_Horizontal_Joystick_Pin); 
+
+// Mapping the values for horizontal and vertical movement of joystick.
+
+  Horizontal_Servo_Value = map(Horizontal_Value, 0 , 1023, Horizontal_Min, Horizontal_Max);
+
+  Vertical_Servo_Value = map(Vertical_Value, 0, 1023, Vertical_Min, Vertical_Max);
+
+  A_Horizontal_Servo_Value = map(A_Horizontal_Value, 0 , 1023, Horizontal_Min, Horizontal_Max);
+
+// Moving the servos
+
+
+
+
+//Control Portion
+
+if (A_Horizontal_Value > 530){
+    if (A_Temp_Horizontal < 180){
+      A_Temp_Horizontal+=5;
+      Third_Servo.write(A_Temp_Horizontal);
+    }
+   
+    
+    
+    
+    
+    }
+
+  if (A_Horizontal_Value < 495){
+    if (A_Temp_Horizontal > 0){
+      A_Temp_Horizontal-=5;
+      Third_Servo.write(A_Temp_Horizontal);
+    }
+    
+    
+    
+    }
+
+
+
+
+  if (Horizontal_Value > 515){
+    if (Temp_Horizontal < 180){
+      Temp_Horizontal+=5;
+      Second_Servo.write(Temp_Horizontal);
+    }
+   
+    
+    
+    
+    
+    }
+
+  if (Horizontal_Value < 495){
+    if (Temp_Horizontal > 0){
+      Temp_Horizontal-=2;
+      Second_Servo.write(Temp_Horizontal);
+    }
+    
+    
+    
+    }
+
+  if (Vertical_Value > 515){
+
+    if (Temp_Vertical < 180){
+      Temp_Vertical+=5;
+      First_Servo.write(Temp_Vertical);
+    }
+  
+    
+    }
+
+  if (Vertical_Value < 495){
+      if (Temp_Vertical > 0){
+        Temp_Vertical-=5;
+        First_Servo.write(Temp_Vertical);
+      }
+    }
+    
+  //First_Servo.write(Horizontal_Servo_Value);
+
+  //Second_Servo.write(Vertical_Servo_Value);
+
+   //Temp_Vertical = Vertical_Servo_Value ;
+   //Temp_Horizontal = Horizontal_Servo_Value ;
+
+  
+
+  delay(40);  // Delay of 2 seconds
+  Serial.println(Temp_Vertical);
+
+}
